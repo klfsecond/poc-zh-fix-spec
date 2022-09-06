@@ -23,17 +23,17 @@ under the License.
 
 // BACKGROUND COLORS
 ////////////////////
-$nav-bg: #424259 !default;
+$nav-bg: #212121 !default;
 $examples-bg: #f3f3f3 !default;
 $code-bg: #212121 !default; //212121
 $code-annotation-bg: #FFFFFF !default;
-$nav-subitem-bg: #424259 !default;
+$nav-subitem-bg: #212121 !default;
 $nav-active-bg: #FF4171 !default;
-$nav-active-parent-bg: #424259 !default; // parent links of the current section
-$lang-select-border: #424259 !default;
+$nav-active-parent-bg: #212121 !default; // parent links of the current section
+$lang-select-border: #212121 !default;
 $lang-select-bg: #FFFFFF !default; //#212121
 $lang-select-active-bg: $examples-bg !default; // feel free to change this to blue or something
-$lang-select-pressed-bg: #424259 !default; // color of language tab bg when mouse is pressed
+$lang-select-pressed-bg: #212121 !default; // color of language tab bg when mouse is pressed
 $main-bg: #FFFFFF !default; //F3F7F9
 $aside-notice-bg: #8fbcd4 !default;
 $aside-warning-bg: #c97a7e !default;
