@@ -48,24 +48,11 @@ CERT and Production
 
 # Supported Orders
 
-The table below details what Order Types and associated Time In Force are supported over the WS API.
-
-| Order Type      | Time In Force    |
-| -----------     | ---------------- |
-| Limit           | GTC <br/> IOC <br/> FOK <br/> GTT |
-| Market          | IOC <br/> FOK |
-| Stop Market     | IOC <br/> FOK |
-| Stop Limit      | GTC <br/> IOC <br/> FOK |
-| Post/Maker Only | GTC |
-
-<br/>
-
 The table below details what Order Types and associated Time In Force are supported over the FIX API.
 
 | Order Type  | Time In Force    |
 | ----------- | ---------------- |
-| Limit       | GTC <br/> IOC <br/> FOK <br/> GTT |
-| Market      | IOC <br/> FOK |
+| Limit       | DAY <br/> GTC <br/> IOC <br/> GTD |
 
 <br/>
 
@@ -108,7 +95,7 @@ This section outlines the FIX messages, how they are supported, and to what exte
 
 | Tag  | Field Name              | Required  | Note |
 | ---- | ----------------------- | --------  | ---- |
-| 8    | BeginString             | Yes       | FIX.4.2 |
+| 8    | BeginString             | Yes       | FIX.5.0 |
 | 9    | BodyLength              | Yes       | (Always unencrypted, must be second field in message)      |
 | 35   | MsgType                 | Yes       |  (Always unencrypted, must be third field in message)    |
 | 49   | SenderCompID            | Yes       | Provided by Zero Hash |
@@ -130,10 +117,10 @@ This section outlines the FIX messages, how they are supported, and to what exte
 Example Message
 
 Client
-8=FIX.4.2^A9=70^A35=A^A34=2^A49=SENDERCOMP^A52=20210714-01:01:10.569^A56=MIDCDEV1^A98=0^A108=60^A10=049^A
+8=FIXT.1.1|9=80|35=A|34=1|49=ZEROTEST|52=20220911-00:01:47.190|56=ZERO|98=0|108=60|141=Y|1137=9|10=118|
 
 Gateway
-8=FIX.4.2^A9=72^A35=A^A49=MIDCDEV1^A56=YOURSENDCOMD^A34=422^A52=20210714-07:52:46.306^A98=0^A108=60^A10=163^A
+8=FIXT.1.1|9=86|35=A|34=1|49=ZERO|52=20220911-00:01:47.237480372|56=ZEROTEST|98=0|108=60|141=Y|1137=9|10=182|
 ```
 
 The logon message identifies and authenticates the user or member and establishes a connection to the FIX Gateway. 
@@ -149,9 +136,12 @@ Begin regular message communication.
 
 | Tag  | Field Name              | Required  | Note |
 | ---- | ----------------------- | --------  | ---- |
-|     | Standard Header             | Yes    |MsgType = A  |
-| 108    | HeartBtInt             | Yes       |  |
-|     | Standard Trailer             | Yes       |  |
+|      | Standard Header         | Yes       | MsgType = A  |
+| 98   | EncryptMethod           | Yes       | 0 = NONE_OTHER <br/> 1 = PKCS <br/> 2 = DES <br/> 3 = PKCS_DES <br/> 4 = PGP_DES <br/> 5 = PGP_DES_MD5<br/> 6 = PEM_DES_MD5 |
+| 108  | HeartBtInt              | Yes       |  |
+| 141  | ResetSeqNumFlag         | No        |  |
+| 1137 | DefaultApplVerID        | Yes       |  |
+|      | Standard Trailer        | Yes       |  |
 
 
 
