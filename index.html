@@ -408,38 +408,6 @@
 <h3 id='2022-09-01'>2022-09-01</h3>
 <p>CERT and Production </p>
 <h1 id='supported-orders'>Supported Orders</h1>
-<p>The table below details what Order Types and associated Time In Force are supported over the WS API.</p>
-
-<table><thead>
-<tr>
-<th>Order Type</th>
-<th>Time In Force</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Limit</td>
-<td>GTC <br/> IOC <br/> FOK <br/> GTT</td>
-</tr>
-<tr>
-<td>Market</td>
-<td>IOC <br/> FOK</td>
-</tr>
-<tr>
-<td>Stop Market</td>
-<td>IOC <br/> FOK</td>
-</tr>
-<tr>
-<td>Stop Limit</td>
-<td>GTC <br/> IOC <br/> FOK</td>
-</tr>
-<tr>
-<td>Post/Maker Only</td>
-<td>GTC</td>
-</tr>
-</tbody></table>
-
-<p><br/></p>
-
 <p>The table below details what Order Types and associated Time In Force are supported over the FIX API.</p>
 
 <table><thead>
@@ -450,11 +418,7 @@
 </thead><tbody>
 <tr>
 <td>Limit</td>
-<td>GTC <br/> IOC <br/> FOK <br/> GTT</td>
-</tr>
-<tr>
-<td>Market</td>
-<td>IOC <br/> FOK</td>
+<td>DAY <br/> GTC <br/> IOC <br/> GTD</td>
 </tr>
 </tbody></table>
 
@@ -497,7 +461,7 @@ Port: <code>44323</code></p>
 <td>8</td>
 <td>BeginString</td>
 <td>Yes</td>
-<td>FIX.4.2</td>
+<td>FIX.5.0</td>
 </tr>
 <tr>
 <td>9</td>
@@ -555,10 +519,10 @@ Port: <code>44323</code></p>
 <h2 id='login-a'>Login (A)</h2><div class="highlight"><pre class="highlight plaintext"><code>Example Message
 
 Client
-8=FIX.4.2^A9=70^A35=A^A34=2^A49=SENDERCOMP^A52=20210714-01:01:10.569^A56=MIDCDEV1^A98=0^A108=60^A10=049^A
+8=FIXT.1.1|9=80|35=A|34=1|49=ZEROTEST|52=20220911-00:01:47.190|56=ZERO|98=0|108=60|141=Y|1137=9|10=118|
 
 Gateway
-8=FIX.4.2^A9=72^A35=A^A49=MIDCDEV1^A56=YOURSENDCOMD^A34=422^A52=20210714-07:52:46.306^A98=0^A108=60^A10=163^A
+8=FIXT.1.1|9=86|35=A|34=1|49=ZERO|52=20220911-00:01:47.237480372|56=ZEROTEST|98=0|108=60|141=Y|1137=9|10=182|
 </code></pre></div>
 <p>The logon message identifies and authenticates the user or member and establishes a connection to the FIX Gateway. 
 The FIX gateway accepts Logon messages as per the FIX specification. Further, the FIX gateway supports the logon sequence required for session authentication. 
@@ -586,8 +550,26 @@ Begin regular message communication.
 <td>MsgType = A</td>
 </tr>
 <tr>
+<td>98</td>
+<td>EncryptMethod</td>
+<td>Yes</td>
+<td>0 = NONE_OTHER <br/> 1 = PKCS <br/> 2 = DES <br/> 3 = PKCS_DES <br/> 4 = PGP_DES <br/> 5 = PGP_DES_MD5<br/> 6 = PEM_DES_MD5</td>
+</tr>
+<tr>
 <td>108</td>
 <td>HeartBtInt</td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td>141</td>
+<td>ResetSeqNumFlag</td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td>1137</td>
+<td>DefaultApplVerID</td>
 <td>Yes</td>
 <td></td>
 </tr>
