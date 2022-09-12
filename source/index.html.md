@@ -54,9 +54,6 @@ The table below details what Order Types and associated Time In Force are suppor
 | ----------- | ---------------- |
 | Limit       | DAY <br/> GTC <br/> IOC <br/> GTD |
 
-<br/>
-
-`We Only Support Market Sell Order Over FIX API`
 
 # <br/>
 
@@ -72,18 +69,22 @@ To connect to Zero Hash over the FIX API clients must establish a secure connect
 
 For testing use;
 
-IP Address: `fix-sandbox.Zero Hash.com`<br />
-Port: `44323`
+IP Address: `FIRMID.oe.cert.zerohash.com`<br />
+Port: `13010`<br/>
+SenderComp: `FIRM-SENDER-COMP-1`
 
 
 For access to Market Data over FIX use;
 
-Port: `44325`
+IP Address: `FIRMID.md.cert.zerohash.com`<br />
+Port: `13010`<br/>
+SenderComp: `FIRM-SENDER-COMP-2`
+
 
 
 # FIX Order Placement
 
-The trading platform will respond to any new order messages and exution with execution reports. Example execution report responses are available below.
+The trading platform will respond to any new order messages and trade with execution reports. Example execution report responses are available below.
 
 <br/>
 
