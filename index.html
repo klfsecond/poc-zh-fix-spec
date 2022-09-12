@@ -421,10 +421,6 @@
 <td>DAY <br/> GTC <br/> IOC <br/> GTD</td>
 </tr>
 </tbody></table>
-
-<p><br/></p>
-
-<p><code>We Only Support Market Sell Order Over FIX API</code></p>
 <h1 id='7c87180da7'><br/></h1><h1 id='fix-api'>FIX API</h1>
 <p>The information in Zero Hash FIX API specification describes the adaptation of the standard FIX 4.2 for vendors and subscribers to communicate with the Zero Hash quotation and execution platform. FIX 4.2 tags, as described in detail on the Financial Information Exchange Protocol Committee website, www.fixprotocol.org as well as custom tags are used extensively in this document and the reader should familiarize themselves with the latest updates to this release. If an application message in Financial Information Exchange Protocol version 4.2, or previous FIX versions, is not included in this document, the message is ignored.</p>
 <h1 id='connectivity'>Connectivity</h1>
@@ -434,14 +430,17 @@
 
 <p>For testing use;</p>
 
-<p>IP Address: <code>fix-sandbox.Zero Hash.com</code><br />
-Port: <code>44323</code></p>
+<p>IP Address: <code>FIRMID.oe.cert.zerohash.com</code><br />
+Port: <code>13010</code><br/>
+SenderComp: <code>FIRM-SENDER-COMP-1</code></p>
 
 <p>For access to Market Data over FIX use;</p>
 
-<p>Port: <code>44325</code></p>
+<p>IP Address: <code>FIRMID.md.cert.zerohash.com</code><br />
+Port: <code>13010</code><br/>
+SenderComp: <code>FIRM-SENDER-COMP-2</code></p>
 <h1 id='fix-order-placement'>FIX Order Placement</h1>
-<p>The trading platform will respond to any new order messages and exution with execution reports. Example execution report responses are available below.</p>
+<p>The trading platform will respond to any new order messages and trade with execution reports. Example execution report responses are available below.</p>
 
 <p><br/></p>
 
