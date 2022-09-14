@@ -175,7 +175,14 @@ Example Message
 
 
 Client
-8=FIX.4.2^A9=115^A35=5^A34=496^A49=YOURSENDCOMP^A52=20210714-08:21:57.076^A56=MIDCDEV1^AA10=128^A
+8  =  FIXT.1.1
+9  =  53
+35 =  5
+34 =  6
+49 =  ZEROTEST
+52 =  20220910-17:30:00.366
+56 =  ZERO
+10 =  00
 ```
 
 The Logout message initiates or confirms the termination of a FIX session. 
@@ -191,11 +198,11 @@ Upon receipt of a Logout message:
 
 <br/>
 
-| Tag  | Field Name              | Required  | Note |
-| ---- | ----------------------- | --------  | ---- |
-|     | Standard Header             | Yes       |  |
-| 58    | Text             | No       | Free format text string (Note: this field does not have a specified maximum length) If the Logout message has been sent by the the FIX gateway, then this field will contain the text “Session closed”. |
-|     | Standard Trailer             | Yes       |  |
+| Tag | Field Name       | Required | Note                                                                                                                                                                                                    |
+| --- | ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|     | Standard Header  | Yes      | MsgType = 5                                                                                                                                                                                             |
+| 58  | Text             | No       | Free format text string (Note: this field does not have a specified maximum length) If the Logout message has been sent by the the FIX gateway, then this field will contain the text “Session closed”. |
+|     | Standard Trailer | Yes      |                                                                                                                                                                                                         |
 
 
 
@@ -206,10 +213,24 @@ Upon receipt of a Logout message:
 Example Message
 
 Client
-8=FIX.4.2^A9=60^A35=0^A34=336^A49=YOURSENDCOMP^A52=20210714-06:36:18.136^A56=MIDCDEV1^A10=120^A
+8  =  FIXT.1.1
+9  =  57
+35 =  0
+34 =  841
+49 =  ZEROTEST
+52 =  20220911-14:09:36.472
+56 =  ZERO
+10 =  087
 
 Gateway
-8=FIX.4.2^A9=58^A35=0^A49=MIDCDEV1^A56=YOURSENDCOMP^A34=8^A52=20210714-01:07:40.546^A10=020^A
+8  =  FIXT.1.1
+9  =  63
+35 =  0
+34 =  849
+49 =  ZERO
+52 =  20220911-14:09:48.786045303
+56 =  ZEROTEST
+10 =  150
 ```
 
 This section indicates the message intended to monitor the status of the communications link during periods of inactivity. 
@@ -224,10 +245,10 @@ The heartbeat message should be sent if agreed upon Heartbeatinterval has elapse
 proceeding Heartbeatinterval a Heartbeat message need not be sent
 <br/>
 
-| Tag  | Field Name              | Required  | Note |
-| ---- | ----------------------- | --------  | ---- |
-|      | Standard Header         | Yes       | MsgType = 0 |
-|      | Standard Trailer        | Yes       |      |
+| Tag | Field Name       | Required | Note        |
+| --- | ---------------- | -------- | ----------- |
+|     | Standard Header  | Yes      | MsgType = 0 |
+|     | Standard Trailer | Yes      |             |
 
 
 
@@ -238,38 +259,124 @@ proceeding Heartbeatinterval a Heartbeat message need not be sent
 ```fix
 Example Message
 
-Client - LTCUSD Buy Limit GTC Order for OrderQty 0.01 at Price of 150
-8=FIX.4.2^A9=160^A35=D^A34=569^A49=YOURSENDCOMP^A52=20210714-10:31:02568^A56=MIDCDEV1^A11=43637618552482556000^A21=2^A38=1^A40=2^A44=150^A54=1^A55=LTCUSD^A59=1^A60=20210714-10:31:02.552^A43229=10^A10=192^A
-
+Client - BTC/USD Buy Limit GTC Order for OrderQty 0.01 at Price of 19000
+8   =   FIXT.1.1
+9   =   254
+35  =   D
+34  =   426
+49  =   ZEROTEST
+50  =   trader
+52  =   20220910-07:10:21.970
+56  =   ZERO
+1   =   firms/Zero-Hash-Liquidity/accounts/test
+11  =   3637983906161824000
+18  =   2
+21  =   1
+22  =   8
+38  =   0.01
+40  =   2
+44  =   19000
+48  =   BTC/USD
+54  =   1
+55  =   BTC/USD
+58  =   ZH Testing Trades
+59  =   1
+60  =   20220913-06:01:21.970
+167 =   CS
+10  =   007
 
 
 Gateway - Execution Reports
 
 ER NEW
-8=FIX.4.2^A9=230^A35=8^A34=582^A49=MIDCDEV1^A52=20210714-10:31:03.862^A56=YOURSENDCOMP^A6=0.0^A11=43637618552482556000^A14=0^A17=30005_582^A20=0^A37=62XGZUU7W05SC3^A38=1000^A39=0^A40=2^A44=150.0^A54=1^A55=LTCUSD^A59=1^A60=20210714-10:31:03.858^A150=0^A151=1000^A43229=10000^A10=132^A
+8   =  FIXT.1.1
+9   =  394
+35  =  8
+34  =  11
+49  =  ZERO
+52  =  20220913-06:09:10.076887737
+56  =  ZEROTEST
+57  =  trader
+1   =  firms/Zero-Hash-Liquidity/accounts/test
+6   =  0.000000000
+11  =  3637983906161824000
+14  =  0.00000000
+17  =  1569568851483602944
+22  =  8
+31  =  0.00
+32  =  0.00000000
+37  =  1569568851307696128
+38  =  0.01000000
+39  =  0
+40  =  2
+44  =  19000.00
+48  =  BTC/USD
+54  =  1
+55  =  BTC/USD
+59  =  0
+60  =  20220913-06:09:10.029186377
+99  =  0.00
+150 =  0
+151 =  0.01000000
+581 =  14
+582 =  4
+10  =  130
 
 ER FILL
-8=FIX.4.2^A9=300^A35=8^A34=583^A49=MIDCDEV1^A52=20210714-10:31:04.106^A56=YOURSENDCOMP^A6=141.78^A11=43637618552482556000^A14=1000^A17=62XGZUU7W05SC32_62XGZUU7W05T^A20=0^A31=141.78^A32=1000^A37=62XGZUU7W05SC3^A38=1000^A39=2^A40=2^A44=150.0^A54=1^A55=LTCUSD^A59=1^A60=20210714-10:31:03.935^A150=2^A151=0^A43211=CROX^A43212=MIDC^A43214=T^A43229=10000^A10=105^A
+8   =   FIXT.1.1
+9   =   408
+35  =   8
+34  =   13
+49  =   ZERO
+52  =   20220913-06:09:10.079060678
+56  =   ZEROTEST
+57  =   trader
+1   =   firms/Zero-Hash-Liquidity/accounts/test
+6   =   22671.612500000
+11  =   3637983906161824000
+14  =   0.01000000
+17  =   1569568851483602949
+22  =   8
+31  =   18740.25
+32  =   0.01000000
+37  =   1569568851307696128
+38  =   0.01000000
+39  =   2
+40  =   2
+44  =   19000.00
+48  =   BTC/USD
+54  =   1
+55  =   BTC/USD
+59  =   0
+60  =   20220913-06:09:10.029186377
+99  =   0.00
+150 =   F
+151 =   0.00000000
+581 =   14
+582 =   4
+828 =   0
+10  =   103
 ```
 
 This message is used to submit an order to the trading system for processing. The trading platform will respond with execution reports.
 
-| Tag  | Field Name              | Required  | Note |
-| ---- | ----------------------- | --------  | ---- |
-|     | Standard Header             | Yes       |  |
-| 11    | ClOrdId             | Yes       | Unique identifier of the order. Must be unique for each session, max 32 chars. |
-| 1    | Account             | No       | Optional identifier from customer, will be passed back in Execution Report. |
-| 21    | HandlInst          | Yes      | '1' = Automated execution order, private, no Broker intervention '2' = Automated execution order, public, Broker intervention OK  '3' = Manual order, best execution   |
-| 55    | Symbol             | Yes       | Common, “human understood” representation of the security, bitcoins US Dollar – BTCUSD, etc. |
-| 54    | Side           | Yes       | '1' = Buy '2' = Sell |
-| 38    | OrderQty           | Yes       | Size of the order. E.G. 10  |
-| 43229 | FractionBase             | Yes       | If FractionBase is 100 and OrderQty field = 1, that means the Order Qty sent to the platform is 0.01. |
-| 40    | OrdType             | Yes       | '1' = Market '2' = Limit |
-| 44    | Price             | No       | Required for limit Ordtypes  |
-| 59 | TimeInForce | No | '1' = GTC '3' = IOC '4' = FOK '6' = GTD (ExpireTime must be set in datetime format)   |
-| 60 | TransactTime | No | Time of execution/order creation (UTC Time in datetime format) |
-| 126 | ExpireTime | No | Required if TimeInForce = 6 (UTC Time in datetime format - 17:18:02.54)
-|     | Standard Trailer             | Yes       |  |
+| Tag | Field Name       | Required | Note                                                                                                                                                                 |
+| --- | ---------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|     | Standard Header  | Yes      |                                                                                                                                                                      |
+| 11  | ClOrdId          | Yes      | Unique identifier of the order. Must be unique for each session, max 32 chars.                                                                                       |
+| 1   | Account          | No       | Optional identifier from customer, will be passed back in Execution Report.                                                                                          |
+| 21  | HandlInst        | Yes      | '1' = Automated execution order, private, no Broker intervention '2' = Automated execution order, public, Broker intervention OK  '3' = Manual order, best execution |
+| 55  | Symbol           | Yes      | Common, “human understood” representation of the security, bitcoins US Dollar – BTCUSD, etc.                                                                         |
+| 48  | Symbol           | Yes      | Symbol                                                                                                                                                               |
+| 54  | Side             | Yes      | '1' = Buy '2' = Sell                                                                                                                                                 |
+| 38  | OrderQty         | Yes      | Size of the order. E.G. 10                                                                                                                                           |
+| 40  | OrdType          | Yes      | '2' = Limit <br/> '3' = Stop <br/> '4' = Stop Limit <br/> 'K' = MARKET_WITH_LEFT_OVER_AS_LIMIT                                                                                                                                             |
+| 44  | Price            | No       | Required for limit Ordtypes                                                                                                                                          |
+| 59  | TimeInForce      | No       | 0 = DAY <br/> 1 = GOOD_TILL_CANCEL <br/> 3 = IMMEDIATE_OR_CANCEL <br/> 6 = GOOD_TILL_DATE                                                                            |
+| 60  | TransactTime     | No       | Time of execution/order creation (UTC Time in datetime format)                                                                                                       |
+| 126 | ExpireTime       | No       | Required if TimeInForce = 6 (UTC Time in datetime format - 17:18:02.54)                                                                                              |
+|     | Instrument       | Yes      | Component Fields can be found in appendix                                                                                                                            |
+|     | Standard Trailer | Yes      |                                                                                                                                                                      |
 
 
 
@@ -287,17 +394,17 @@ Gateway
 
 ```
 
-| Tag  | Field Name              | Required  | Note |
-| ---- | ----------------------- | --------  | ---- |
-|     | Standard Header             | Yes       |  |
-| 41    | OrigClOrdId             | Yes       | ClOrdID of the previous order |
-| 37    | OrdId             | No       | Unique Identifier of order assigned by the platform. |
-| 11    | ClOrdId             | Yes       | Unique identifier of the order. Must be unique for each session, max 32 chars. |
-| 55    | Symbol             | Yes       | Common, “human understood” representation of the security, bitcoins US Dollar – BTCUSD, etc. |
-| 54    | Side           | Yes       | '1' = Buy '2' = Sell |
-| 38    | OrderQty           | Yes       | Size of the order. E.G. 10  |
-| 58 | Text             | No       |  |
-|     | Standard Trailer             | Yes       |  |
+| Tag | Field Name       | Required | Note                                                                                         |
+| --- | ---------------- | -------- | -------------------------------------------------------------------------------------------- |
+|     | Standard Header  | Yes      |                                                                                              |
+| 41  | OrigClOrdId      | Yes      | ClOrdID of the previous order                                                                |
+| 37  | OrdId            | No       | Unique Identifier of order assigned by the platform.                                         |
+| 11  | ClOrdId          | Yes      | Unique identifier of the order. Must be unique for each session, max 32 chars.               |
+| 55  | Symbol           | Yes      | Common, “human understood” representation of the security, bitcoins US Dollar – BTCUSD, etc. |
+| 54  | Side             | Yes      | '1' = Buy '2' = Sell                                                                         |
+| 38  | OrderQty         | Yes      | Size of the order. E.G. 10                                                                   |
+| 58  | Text             | No       |                                                                                              |
+|     | Standard Trailer | Yes      |                                                                                              |
 
 
 
