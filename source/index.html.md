@@ -49,18 +49,7 @@ The table below details what Order Types and associated Time In Force are suppor
 | ----------- | ---------------- |
 | Limit       | DAY <br/> GTC <br/> IOC <br/> GTD |
 
-
-# <br/>
-
-# FIX ORDER ENTRY API
-
-The Zero Hash Matching Engine will respond to any new order messages with execution reports. Example order messages and execution report responses are available below.
-
-<br/>
-
-This section outlines the FIX messages, how they are supported, and to what extent the business data is translated within the FIX Gateway.
-
-## Connectivity
+# Connectivity
 To connect to the Zero Hash Matching Engine via FIX API, clients must have thier source IP address whitelisted and establish a secure SSL connection to the FIX gateway. If your FIX implementation does not support establishing a SSL connection natively, you will need to setup a local proxy such as stunnel to establish a secure connection to the FIX gateway. To request these details and whitelist your source IP addresses, clients can contact support@zerohash.com.
 
 <i>Message Sequence Numbers are reset on Friday at 17:00 EST.</i>
@@ -73,7 +62,18 @@ SenderComp: `FIRM-SENDER-COMP-1`
 
 TargetCompID: `ZERO`
 
-<br/>
+
+For access to Market Data over FIX use;
+
+IP Address: `FIRMID.md.cert.zerohash.com`<br />
+Port: `13010`<br/>
+SenderComp: `FIRM-SENDER-COMP-2`
+
+TargetCompID: `ZERO`
+
+
+# <br/>
+# SESSION LEVEL MESSAGES
 
 ### Message Header
 
@@ -96,7 +96,6 @@ TargetCompID: `ZERO`
 | ---- | ----------------------- | --------  | ---- |
 | 10   | CheckSum                | Yes       | (Always unencrypted, always last field in message)   |
 
-# SESSION LEVEL MESSAGES
 # Login (A)
 
 ```fix
@@ -150,8 +149,6 @@ After a successful logon as described in the specification the FIX gateway will:
 | 141  | ResetSeqNumFlag         | No        |  |
 | 1137 | DefaultApplVerID        | Yes       |  |
 |      | Standard Trailer        | Yes       |  |
-
-
 
 # Logout (5)
 
@@ -233,8 +230,13 @@ proceeding Heartbeatinterval a Heartbeat message need not be sent
 |     | Standard Header  | Yes      | MsgType = 0 |
 |     | Standard Trailer | Yes      |             |
 
+# <br/>
+# FIX ORDER ENTRY MESSAGES
+The Zero Hash Matching Engine will respond to any new order messages with execution reports. Example order messages and execution report responses are available below.
+<br/>
+This section outlines the FIX messages, how they are supported, and to what extent the business data is translated within the FIX Gateway.
+<br/>
 
-# APPLICATION LEVEL MESSAGES
 # New Order - Single (D)
 
 ```fix
@@ -486,7 +488,6 @@ The Execution Report is automatically generated and sent by the gatway automatic
 |     | Instrument       | Yes      | Component Fields can be found in appendix                                                      |
 |     | Standard Trailer | Yes      |                                                                                                |
 
-
 # Execution Report (8)
 
 The Execution Report is automatically generated and sent by the FIX Gateway .
@@ -536,22 +537,10 @@ This message is send when a Order Cancel Request or Order Cancel/Replace Request
 
 # <br/>
 
-# FIX MARKET DATA API
+# FIX MARKET DATA MESSAGES
 
 The information in Zero Hash FIX API specification describes the adaptation of the standard FIX 5.0 for vendors and subscribers to communicate with the Zero Hash market. FIX 5.0 tags, as described in detail on the Financial Information Exchange Protocol Committee website, www.fixprotocol.org as well as custom tags are used extensively in this document and the reader should familiarize themselves with the latest updates to this release. If an application message in Financial Information Exchange Protocol version 5.0, or previous FIX versions, is not included in this document, the message is ignored.
 
-## Connectivity
-
-For access to Market Data over FIX use;
-
-IP Address: `FIRMID.md.cert.zerohash.com`<br />
-Port: `13010`<br/>
-SenderComp: `FIRM-SENDER-COMP-2`
-
-TargetCompID: `ZERO`
-
-# <br/>
-# APPLICATION LEVEL MESSAGES
 # Market Data Request (V)
 
 ```fix
@@ -796,8 +785,8 @@ The FIX message would appear as
 | 372 | RefMsgType           |          | Reference Message type                                                                                                                                                                                                                                                                          |
 | 45  | RefSeqNum            |          | Reference Sequence Number                                                                                                                                                                                                                                                                       |
 |     | Standard Trailer     |          |                                                                                                                                                                                                                                                                                                 |
-
-# Appendix
+# <br/>
+# APPENDIX
 
 Below is the appendix for needed components included in Order Executions & Market Data requests:
 
