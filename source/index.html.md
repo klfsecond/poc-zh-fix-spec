@@ -77,8 +77,6 @@ TargetCompID: `ZERO`
 
 ### Message Header
 
-<br/>
-
 | Tag  | Field Name              | Required  | Note |
 | ---- | ----------------------- | --------  | ---- |
 | 8    | BeginString             | Yes       | FIX.5.0 |
@@ -349,8 +347,8 @@ This message is used to submit an order to the trading system for processing. Th
 | 11  | ClOrdId          | Yes      | Unique identifier of the order. Must be unique for each session, max 32 chars.                                                                                       |
 | 1   | Account          | Yes      | Account created in matching engine in format : firms/<Clearing Party Name>/accounts/<Account Name>                                                                   |
 | 21  | HandlInst        | Yes      | '1' = Automated execution order, private, no Broker intervention '2' = Automated execution order, public, Broker intervention OK  '3' = Manual order, best execution |
-| 55  | Symbol           | Yes      | Symbol of instrument                                                                                                                                                 |
-| 48  | SecurityID       | Yes      | Security ID of instrument, usually same as symbol                                                                                                                    |
+| 55  | Symbol           | Yes      | Symbol of instrument (Part of Instrument Component)                                                                                                                                                 |
+| 48  | SecurityID       | Yes      | Security ID of instrument, usually same as symbol (Part of Instrument Component)                                                                                                                    |
 | 54  | Side             | Yes      | '1' = Buy '2' = Sell                                                                                                                                                 |
 | 38  | OrderQty         | Yes      | Size of the order. E.G. 10                                                                                                                                           |
 | 40  | OrdType          | Yes      | '2' = Limit <br/> '3' = Stop <br/> '4' = Stop Limit <br/> 'K' = Market with left over as Limit                                                                       |
@@ -359,7 +357,7 @@ This message is used to submit an order to the trading system for processing. Th
 | 59  | TimeInForce      | No       | 0 = DAY <br/> 1 = GOOD_TILL_CANCEL <br/> 3 = IMMEDIATE_OR_CANCEL <br/> 6 = GOOD_TILL_DATE                                                                            |
 | 60  | TransactTime     | Yes      | Time of execution/order creation (UTC Time in datetime format)                                                                                                       |
 | 126 | ExpireTime       | No       | Required if TimeInForce = 6 (UTC Time in datetime format - 17:18:02.54)                                                                                              |
-|     | Instrument       | Yes      | Component Fields can be found in appendix                                                                                                                            |
+|     | Instrument       | No      | Component Fields can be found in appendix                                                                                                                            |
 |     | Standard Trailer | Yes      |                                                                                                                                                                      |
 
 # Order Cancel Request (F)
