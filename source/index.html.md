@@ -20,9 +20,10 @@ search: true
 
 ## Overview
 
-Welcome to Zero Hash API documentation. These documents outline trading platform functionality, market details, and APIs.
+Welcome to Zero Hash Matching Engine FIX API documentation.
 
-APIs are separated into two categories: Market data feed and trading. Feed APIs provide market data and are public. Trading APIs require authentication and provide access to placing orders and other account information. 
+The FIX API specification is separated into two categories: Order Entry and Market Data APIs.
+The information in the FIX API specification describes the adoptation of the standard FIX 5.0 for vendors and subscribers to communicate with the Zero Hash matching engine. FIX  tags, as described in detail on the Financial Information Exchange Protocol Committee website, www.fixprotocol.org as well as custom tags are used extensively in this document and the reader should familiarize themselves with the latest updates to this release. If an application message in Financial Information Exchange Protocol version 5.0, or previous FIX versions, is not included in this document, the message is ignored.
 
 **Version:** 1.0.0 
 
@@ -30,21 +31,15 @@ APIs are separated into two categories: Market data feed and trading. Feed APIs 
 
 The Zero Hash API is rate limited to prevent abuse that would degrade our ability to maintain consistent API performance for all users.
 
-### Financial Information Exchange API
-
 The FIX API throttles the number of incoming messages to 10 commands per second by default. This can be increased as needed.
 
 ## Changelog
 
-Recent changes and additions to Zero Hash API.
-
-### 2021-01-30
-
-Initial Version
+Recent changes and additions to Zero Hash Matching Engine API.
 
 ### 2022-09-01
 
-CERT and Production 
+Initial Version
 
 # Supported Orders
 
@@ -57,15 +52,18 @@ The table below details what Order Types and associated Time In Force are suppor
 
 # <br/>
 
-# FIX API
+# FIX ORDER ENTRY API
 
-The information in Zero Hash FIX API specification describes the adaptation of the standard FIX 4.2 for vendors and subscribers to communicate with the Zero Hash quotation and execution platform. FIX 4.2 tags, as described in detail on the Financial Information Exchange Protocol Committee website, www.fixprotocol.org as well as custom tags are used extensively in this document and the reader should familiarize themselves with the latest updates to this release. If an application message in Financial Information Exchange Protocol version 4.2, or previous FIX versions, is not included in this document, the message is ignored.
+The Zero Hash Matching Engine will respond to any new order messages with execution reports. Example order messages and execution report responses are available below.
 
+<br/>
 
-# Connectivity
-To connect to Zero Hash over the FIX API clients must establish a secure connection to the FIX gateway. you can Connect to the FIX gateway with secure tcp+ssl connection without whitelisting your ip. For a FIX implementation that does not support establishing a TCP SSL connection natively, you will need to setup a local proxy such as stunnel to establish a secure connection to the FIX gateway. if these two ways not working with you then you to provide us connectivity details such as the IP Address and Port Number which will be assigned by the Zero Hash trade operations team. To request these details and to Whitelist clients' IP addresses, clients can contact support@zerohash.com or raise a request via the support portal through the www.zerohash.com website.
+This section outlines the FIX messages, how they are supported, and to what extent the business data is translated within the FIX Gateway.
 
-<i>Message Sequence Numbers are reset daily at 01:00 UTC.</i>
+## Connectivity
+To connect to the Zero Hash Matching Engine via FIX API, clients must have thier source IP address whitelisted and establish a secure SSL connection to the FIX gateway. If your FIX implementation does not support establishing a SSL connection natively, you will need to setup a local proxy such as stunnel to establish a secure connection to the FIX gateway. To request these details and whitelist your source IP addresses, clients can contact support@zerohash.com.
+
+<i>Message Sequence Numbers are reset on Friday at 17:00 EST.</i>
 
 For testing use;
 
@@ -73,22 +71,9 @@ IP Address: `FIRMID.oe.cert.zerohash.com`<br />
 Port: `13010`<br/>
 SenderComp: `FIRM-SENDER-COMP-1`
 
-
-For access to Market Data over FIX use;
-
-IP Address: `FIRMID.md.cert.zerohash.com`<br />
-Port: `13010`<br/>
-SenderComp: `FIRM-SENDER-COMP-2`
-
-
-
-# FIX Order Placement
-
-The trading platform will respond to any new order messages and trade with execution reports. Example execution report responses are available below.
+TargetCompID: `ZERO`
 
 <br/>
-
-This section outlines the FIX messages, how they are supported, and to what extent the business data is translated within the FIX Gateway.
 
 ### Message Header
 
@@ -111,8 +96,8 @@ This section outlines the FIX messages, how they are supported, and to what exte
 | ---- | ----------------------- | --------  | ---- |
 | 10   | CheckSum                | Yes       | (Always unencrypted, always last field in message)   |
 
-
-## Login (A)
+# SESSION LEVEL MESSAGES
+# Login (A)
 
 ```fix
 Example Message
@@ -122,7 +107,7 @@ Client
 9    =  80
 35   =  A
 34   =  1
-49   =  ZEROTEST
+49   =  YOURSENDERCOMP
 52   =  20220911-00:01:47.190
 56   =  ZERO
 98   =  0
@@ -138,7 +123,7 @@ Gateway
 34   =  1
 49   =  ZERO
 52   =  20220911-00:01:47.237480372
-56   =  ZEROTEST
+56   =  YOURSENDERCOMP
 98   =  0
 108  =  60
 141  =  Y
@@ -149,12 +134,12 @@ Gateway
 The logon message identifies and authenticates the user or member and establishes a connection to the FIX Gateway. 
 The FIX gateway accepts Logon messages as per the FIX specification. Further, the FIX gateway supports the logon sequence required for session authentication. 
 After a successful logon as described in the specification the FIX gateway will: 
-Initiate retransmission processing via a resend request if the Logon sequence number is greater than the value expected
-Initiate logout processing via a Logout message with an appropriate error message, then waits for a confirming Logout before disconnecting if the Logon sequence number is less than expected. If the confirming Logout has not been received within a short period of time the session will be disconnected.
-Handle retransmission requests.
-Initiate a Logon using the SenderCompID in the message header.
-Will forwarded to the FIX client messages that are waiting in the outbound queue
-Begin regular message communication.
+-Initiate retransmission processing via a resend request if the Logon sequence number is greater than the value expected
+-Initiate logout processing via a Logout message with an appropriate error message, then waits for a confirming Logout before disconnecting if the Logon sequence number is less than expected. If the confirming Logout has not been received within a short period of time the session will be disconnected.
+-Handle retransmission requests.
+-Initiate a Logon using the SenderCompID in the message header.
+-Forwarded to the FIX client messages that are waiting in the outbound queue
+-Begin regular message communication.
 <br/>
 
 | Tag  | Field Name              | Required  | Note |
@@ -168,7 +153,7 @@ Begin regular message communication.
 
 
 
-## Logout (5)
+# Logout (5)
 
 ```fix
 Example Message
@@ -179,7 +164,7 @@ Client
 9  =  53
 35 =  5
 34 =  6
-49 =  ZEROTEST
+49 =  YOURSENDERCOMP
 52 =  20220910-17:30:00.366
 56 =  ZERO
 10 =  00
@@ -204,10 +189,7 @@ Upon receipt of a Logout message:
 | 58  | Text             | No       | Free format text string (Note: this field does not have a specified maximum length) If the Logout message has been sent by the the FIX gateway, then this field will contain the text “Session closed”. |
 |     | Standard Trailer | Yes      |                                                                                                                                                                                                         |
 
-
-
-
-## Heartbeat (0)
+# Heartbeat (0)
 
 ```fix
 Example Message
@@ -217,7 +199,7 @@ Client
 9  =  57
 35 =  0
 34 =  841
-49 =  ZEROTEST
+49 =  YOURSENDERCOMP
 52 =  20220911-14:09:36.472
 56 =  ZERO
 10 =  087
@@ -229,7 +211,7 @@ Gateway
 34 =  849
 49 =  ZERO
 52 =  20220911-14:09:48.786045303
-56 =  ZEROTEST
+56 =  YOURSENDERCOMP
 10 =  150
 ```
 
@@ -243,6 +225,7 @@ The FIX market data accepts and generates Heartbeat messages as per the FIX spec
 
 The heartbeat message should be sent if agreed upon Heartbeatinterval has elapsed since the last message sent. If any 
 proceeding Heartbeatinterval a Heartbeat message need not be sent
+
 <br/>
 
 | Tag | Field Name       | Required | Note        |
@@ -251,10 +234,8 @@ proceeding Heartbeatinterval a Heartbeat message need not be sent
 |     | Standard Trailer | Yes      |             |
 
 
-
-
-
-## New Order - Single (D)
+# APPLICATION LEVEL MESSAGES
+# New Order - Single (D)
 
 ```fix
 Example Message
@@ -264,7 +245,7 @@ Client - BTC/USD Buy Limit GTC Order for OrderQty 0.01 at Price of 19000
 9   =   254
 35  =   D
 34  =   426
-49  =   ZEROTEST
+49  =   YOURSENDERCOMP
 50  =   trader
 52  =   20220910-07:10:21.970
 56  =   ZERO
@@ -295,7 +276,7 @@ ER NEW
 34  =  11
 49  =  ZERO
 52  =  20220913-06:09:10.076887737
-56  =  ZEROTEST
+56  =  YOURSENDERCOMP
 57  =  trader
 1   =  firms/Zero-Hash-Liquidity/accounts/test
 6   =  0.000000000
@@ -329,7 +310,7 @@ ER FILL
 34  =   13
 49  =   ZERO
 52  =   20220913-06:09:10.079060678
-56  =   ZEROTEST
+56  =   YOURSENDERCOMP
 57  =   trader
 1   =   firms/Zero-Hash-Liquidity/accounts/test
 6   =   22671.612500000
@@ -379,10 +360,7 @@ This message is used to submit an order to the trading system for processing. Th
 |     | Instrument       | Yes      | Component Fields can be found in appendix                                                                                                                            |
 |     | Standard Trailer | Yes      |                                                                                                                                                                      |
 
-
-
-
-## Order Cancel Request (F)
+# Order Cancel Request (F)
 
 ```fix
 Example Message
@@ -392,7 +370,7 @@ Client
 9    =    238
 35   =    F
 34   =    76
-49   =    ZEROTEST
+49   =    YOURSENDERCOMP
 50   =    trader
 52   =    20220817-13:02:41.202
 56   =    ZERO
@@ -422,7 +400,7 @@ Client
 
 
 
-## Order Cancel/Replace Request (G)
+# Order Cancel/Replace Request (G)
 
 ```fix
 Example message
@@ -432,7 +410,7 @@ Client
 9    =    294
 35   =    G
 34   =    32
-49   =    ZEROTEST
+49   =    YOURSENDERCOMP
 50   =    trader
 52   =    20220818-10:02:48.403
 56   =    ZERO
@@ -509,9 +487,9 @@ The Execution Report is automatically generated and sent by the gatway automatic
 |     | Standard Trailer | Yes      |                                                                                                |
 
 
-## Execution Report (8)
+# Execution Report (8)
 
-The Execution Report is automatically generated and sent by the gatway automatically.
+The Execution Report is automatically generated and sent by the FIX Gateway .
 
 
 | Tag | Field Name       | Required | Note                                                                                                                                                   |
@@ -540,7 +518,7 @@ The Execution Report is automatically generated and sent by the gatway automatic
 | 58  | Text             | -        |                                                                                                                                                        |
 |     | Standard Trailer | -        |                                                                                                                                                        |
 
-## Order Cancel Reject (9)
+# Order Cancel Reject (9)
 This message is send when a Order Cancel Request or Order Cancel/Replace Request is rejected
 
 | Tag | Field Name       | Required | Note                                                                           |
@@ -555,12 +533,26 @@ This message is send when a Order Cancel Request or Order Cancel/Replace Request
 | 434 | CxlRejResponseTo | -        | Unique identifier of the Canceled order.                                       |
 |     | Standard Trailer | -        |                                                                                |
 
-# FIX Market Data
 
-The information in Zero Hash FIX API specification describes the adaptation of the standard FIX 5.0 for vendors and subscribers to communicate with the Zero Hash quotation and execution platform. FIX 5.0 tags, as described in detail on the Financial Information Exchange Protocol Committee website, www.fixprotocol.org as well as custom tags are used extensively in this document and the reader should familiarize themselves with the latest updates to this release. If an application message in Financial Information Exchange Protocol version 5.0, or previous FIX versions, is not included in this document, the message is ignored.
+# <br/>
 
+# FIX MARKET DATA API
 
-## Market Data Request (V)
+The information in Zero Hash FIX API specification describes the adaptation of the standard FIX 5.0 for vendors and subscribers to communicate with the Zero Hash market. FIX 5.0 tags, as described in detail on the Financial Information Exchange Protocol Committee website, www.fixprotocol.org as well as custom tags are used extensively in this document and the reader should familiarize themselves with the latest updates to this release. If an application message in Financial Information Exchange Protocol version 5.0, or previous FIX versions, is not included in this document, the message is ignored.
+
+## Connectivity
+
+For access to Market Data over FIX use;
+
+IP Address: `FIRMID.md.cert.zerohash.com`<br />
+Port: `13010`<br/>
+SenderComp: `FIRM-SENDER-COMP-2`
+
+TargetCompID: `ZERO`
+
+# <br/>
+# APPLICATION LEVEL MESSAGES
+# Market Data Request (V)
 
 ```fix
 Example FIX Message
@@ -571,7 +563,7 @@ The FIX message would appear as
 9   =   133
 35  =   V
 34  =   306
-49  =   ZEROTEST
+49  =   YOURSENDERCOMP
 52  =   20220915-09:58:59.011
 56  =   ZERO
 146 =   1
@@ -599,7 +591,7 @@ The FIX message would appear as
 |     | Standard Trailer        |          |                                                                                                      |
 
 
-## Market Data Responses – Top of Book Snapshot (W)
+# Market Data Responses – Top of Book Snapshot (W)
 
 ```fix
 Example FIX Message
@@ -612,7 +604,7 @@ The FIX message would appear as
 34   =  8819
 49   =  ZERO
 52   =  20220915-09:58:59.131087940
-56   =  ZEROTEST
+56   =  YOURSENDERCOMP
 22   =  8
 48   =  BTC/USD
 55   =  BTC/USD
@@ -713,7 +705,7 @@ The FIX message would appear as
 
 
 
-## Market Data Responses– Incremental Refresh (X)
+# Market Data Responses– Incremental Refresh (X)
 
 ```fix
 Example FIX Message
@@ -726,7 +718,7 @@ The FIX message would appear as
 34   =    12781
 49   =    ZERO
 52   =    20220915-12:55:24.957686955
-56   =    ZEROTEST
+56   =    YOURSENDERCOMP
 262  =    ZERO
 268  =    1
 279  =    0
@@ -762,7 +754,7 @@ The FIX message would appear as
 | 58  | Text             |          | Order ID reference                                                                                                                    |
 |     | Standard Trailer |          |                                                                                                                                       |
 
-## Security List Request (x)
+# Security List Request (x)
 
 ```fix
 Example FIX Message
@@ -792,7 +784,7 @@ The FIX message would appear as
 |     | Standard Trailer        |          |                                                                                                                                                                            |
 
 
-## Business message reject (j)
+# Business Message Reject (j)
 
 <br/>
 
