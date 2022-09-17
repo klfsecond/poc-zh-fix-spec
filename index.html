@@ -370,13 +370,48 @@
             <a href="#fix-market-data" class="toc-h1 toc-link" data-title="FIX Market Data">FIX Market Data</a>
               <ul class="toc-list-h2">
                   <li>
+                    <a href="#market-data-request-v" class="toc-h2 toc-link" data-title="Market Data Request (V)">Market Data Request (V)</a>
+                  </li>
+                  <li>
                     <a href="#market-data-responses-top-of-book-snapshot-w" class="toc-h2 toc-link" data-title="Market Data Responses – Top of Book Snapshot (W)">Market Data Responses – Top of Book Snapshot (W)</a>
                   </li>
                   <li>
                     <a href="#market-data-responses-incremental-refresh-x" class="toc-h2 toc-link" data-title="Market Data Responses– Incremental Refresh (X)">Market Data Responses– Incremental Refresh (X)</a>
                   </li>
                   <li>
-                    <a href="#market-data-request-reject-y" class="toc-h2 toc-link" data-title="Market Data Request Reject (Y)">Market Data Request Reject (Y)</a>
+                    <a href="#security-list-request-x" class="toc-h2 toc-link" data-title="Security List Request (x)">Security List Request (x)</a>
+                  </li>
+                  <li>
+                    <a href="#business-message-reject-j" class="toc-h2 toc-link" data-title="Business message reject (j)">Business message reject (j)</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#appendix" class="toc-h1 toc-link" data-title="Appendix">Appendix</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#instrument" class="toc-h2 toc-link" data-title="Instrument">Instrument</a>
+                  </li>
+                  <li>
+                    <a href="#orderqtydata" class="toc-h2 toc-link" data-title="OrderQtyData">OrderQtyData</a>
+                  </li>
+                  <li>
+                    <a href="#parties" class="toc-h2 toc-link" data-title="Parties">Parties</a>
+                  </li>
+                  <li>
+                    <a href="#commissiondata" class="toc-h2 toc-link" data-title="CommissionData">CommissionData</a>
+                  </li>
+                  <li>
+                    <a href="#instrmtlegexecgrp" class="toc-h2 toc-link" data-title="InstrmtLegExecGrp">InstrmtLegExecGrp</a>
+                  </li>
+                  <li>
+                    <a href="#instrumentleg" class="toc-h2 toc-link" data-title="InstrumentLeg">InstrumentLeg</a>
+                  </li>
+                  <li>
+                    <a href="#eventgrp" class="toc-h2 toc-link" data-title="EventGrp">EventGrp</a>
+                  </li>
+                  <li>
+                    <a href="#mdfullgrp" class="toc-h2 toc-link" data-title="MDFullGrp">MDFullGrp</a>
                   </li>
               </ul>
           </li>
@@ -834,8 +869,8 @@ ER FILL
 <tr>
 <td>1</td>
 <td>Account</td>
-<td>No</td>
-<td>Optional identifier from customer, will be passed back in Execution Report.</td>
+<td>Yes</td>
+<td>Account created in matching engine in format : firms/<Clearing Party Name>/accounts/<Account Name></td>
 </tr>
 <tr>
 <td>21</td>
@@ -847,13 +882,13 @@ ER FILL
 <td>55</td>
 <td>Symbol</td>
 <td>Yes</td>
-<td>Common, “human understood” representation of the security, bitcoins US Dollar – BTCUSD, etc.</td>
+<td>Symbol of instrument</td>
 </tr>
 <tr>
 <td>48</td>
-<td>Symbol</td>
+<td>SecurityID</td>
 <td>Yes</td>
-<td>Symbol</td>
+<td>Security ID of instrument, usually same as symbol</td>
 </tr>
 <tr>
 <td>54</td>
@@ -871,13 +906,19 @@ ER FILL
 <td>40</td>
 <td>OrdType</td>
 <td>Yes</td>
-<td>&#39;2&#39; = Limit <br/> &#39;3&#39; = Stop <br/> &#39;4&#39; = Stop Limit <br/> &#39;K&#39; = MARKET_WITH_LEFT_OVER_AS_LIMIT</td>
+<td>&#39;2&#39; = Limit <br/> &#39;3&#39; = Stop <br/> &#39;4&#39; = Stop Limit <br/> &#39;K&#39; = Market with left over as Limit</td>
 </tr>
 <tr>
 <td>44</td>
 <td>Price</td>
 <td>No</td>
 <td>Required for limit Ordtypes</td>
+</tr>
+<tr>
+<td>50</td>
+<td>User</td>
+<td>Yes</td>
+<td>User created with specific relationships in matching engine</td>
 </tr>
 <tr>
 <td>59</td>
@@ -888,7 +929,7 @@ ER FILL
 <tr>
 <td>60</td>
 <td>TransactTime</td>
-<td>No</td>
+<td>Yes</td>
 <td>Time of execution/order creation (UTC Time in datetime format)</td>
 </tr>
 <tr>
@@ -913,11 +954,23 @@ ER FILL
 <h2 id='order-cancel-request-f'>Order Cancel Request (F)</h2><div class="highlight"><pre class="highlight plaintext"><code>Example Message
 
 Client
-8=FIX.4.2^A9=188^A35=F^A34=104^A49=HASFIX02^A52=20210714-12:56:35.070^A56=MIDCDEV1^A11=63637618640333706000^A21=1^A38=1^A40=2^A41=62637618638809898000^A44=125^A54=1^A55=LTCUSD^A59=1^A60=20210714-12:56:35.075^A43229=100^A10=196^A
-
-Gateway
-8=FIX.4.2^A9=183^A35=F^A34=724^A49=MIDCDEV1^A52=20210714-12:56:35.080^A56=YOURSENDCOMP^A11=63637618640333706000^A21=2^A38=1^A40=2^A41=62637618638809898000^A44=125^A54=1^A55=LTCUSD^A59=1^A60=20210714-12:56:35.80^A43229=1^A10=094^A
-
+8    =    FIXT.1.1
+9    =    238
+35   =    F
+34   =    76
+49   =    ZEROTEST
+50   =    trader
+52   =    20220817-13:02:41.202
+56   =    ZERO
+1128 =    9
+1    =    firms/Zero-Hash-Liquidity/accounts/test
+11   =    16329117-3bf0-4684-b74a-54f44adbbe84
+38   =    0.02
+41   =    e31e8ba5-2759-4255-8f08-91c1d18b9ebb
+54   =    1
+55   =    BTC/USD
+60   =    20220817-13:02:41
+10   =    171
 </code></pre></div>
 <table><thead>
 <tr>
@@ -950,6 +1003,12 @@ Gateway
 <td>ClOrdId</td>
 <td>Yes</td>
 <td>Unique identifier of the order. Must be unique for each session, max 32 chars.</td>
+</tr>
+<tr>
+<td>60</td>
+<td>TransactTime</td>
+<td>Yes</td>
+<td>Time of execution/order creation (UTC Time in datetime format)</td>
 </tr>
 <tr>
 <td>55</td>
@@ -985,10 +1044,66 @@ Gateway
 <h2 id='order-cancel-replace-request-g'>Order Cancel/Replace Request (G)</h2><div class="highlight"><pre class="highlight plaintext"><code>Example message
 
 Client
-8=FIX.4.2^A9=188^A35=F^A34=104^A49=HASFIX02^A52=20210714-12:37:23.030^A56=MIDCDEV1^A11=61637618630042074000^A21=1^A38=1^A40=2^A41=60637618629492018000^A44=47250^A54=1^A55=LTCUSD^A59=1^A60=20210714-12:37:23.35^A43229=100^A10=196^A
+8    =    FIXT.1.1
+9    =    294
+35   =    G
+34   =    32
+49   =    ZEROTEST
+50   =    trader
+52   =    20220818-10:02:48.403
+56   =    ZERO
+1128 =    9
+1    =    firms/Zero-Hash-Liquidity/accounts/test
+11   =    b0328323-0daa-4654-aa9d-b0a9a77af8e0
+21   =    1
+38   =    0.03
+40   =    2
+41   =    84dae91a-50a6-44f1-8c9f-6fd51ca46560
+44   =    93500
+54   =    1
+55   =    BTC/USD
+59   =    1
+60   =    20220818-10:02:48
+453  =    1
+448  =    DBS_GROUP
+447  =    D
+452  =    1
+10   =    098
 
 Gateway
-8=FIX.4.2^A9=183^A35=G^A34=704^A49=MIDCDEV1^A52=20210714-12:37:23.035^A56=YOURSENDCOMP^A11=61637618630042074000^A21=2^A38=1^A40=2^A41=60637618629492018000^A44=47250^A54=1^A55=LTCUSD^A59=1^A60=20210714-12:37:23.35^A43229=1^A10=057^A
+8   =   FIXT.1.1
+9   =   410
+35  =   8
+34  =   67
+49  =   ZERO
+52  =   20220818-10:02:48.452815018
+56  =   FUTU-1
+57  =   TRADER
+1   =   firms/Zero-Hash-Liquidity/accounts/FUTU
+6   =   0.000000000
+11  =   b0328323-0daa-4654-aa9d-b0a9a77af8e0
+14  =   0.00
+17  =   1560205564477079552
+22  =   8
+31  =   0.00
+32  =   0.00
+37  =   1560205405594038272
+38  =   0.03
+39  =   0
+40  =   2
+41  =   84dae91a-50a6-44f1-8c9f-6fd51ca46560
+44  =   93500.00
+48  =   BTC/USD
+54  =   1
+55  =   BTC/USD
+59  =   1
+60  =   20220818-10:02:48.445059165
+99  =   0.00
+150 =   5
+151 =   0.03
+581 =   14
+582 =   4
+10  =   143
 </code></pre></div>
 <p>The Execution Report is automatically generated and sent by the gatway automatically.</p>
 
@@ -1043,16 +1158,16 @@ Gateway
 <td>&#39;1&#39; = Buy &#39;2&#39; = Sell</td>
 </tr>
 <tr>
-<td>38</td>
-<td>OrderQty</td>
+<td></td>
+<td>OrderQtyData</td>
 <td>Yes</td>
-<td>Size of the order. E.G. 10</td>
+<td>Component fields can be found in appendix</td>
 </tr>
 <tr>
 <td>40</td>
 <td>OrdType</td>
 <td>Yes</td>
-<td></td>
+<td>&#39;2&#39; = Limit <br/> &#39;3&#39; = Stop <br/> &#39;4&#39; = Stop Limit <br/> &#39;K&#39; = Market with left over as Limit</td>
 </tr>
 <tr>
 <td>44</td>
@@ -1071,6 +1186,12 @@ Gateway
 <td>ExpireTime</td>
 <td>No</td>
 <td>Required if TimeInForce = GTT (UTC time in datetime format - 17:18:02.544)</td>
+</tr>
+<tr>
+<td></td>
+<td>Instrument</td>
+<td>Yes</td>
+<td>Component Fields can be found in appendix</td>
 </tr>
 <tr>
 <td></td>
@@ -1166,7 +1287,7 @@ Gateway
 <td>40</td>
 <td>OrdType</td>
 <td>-</td>
-<td>&#39;1&#39; = Market &#39;2&#39; = Limit</td>
+<td>&#39;2&#39; = Limit <br/> &#39;3&#39; = Stop <br/> &#39;4&#39; = Stop Limit <br/> &#39;K&#39; = Market with left over as Limit</td>
 </tr>
 <tr>
 <td>44</td>
@@ -1215,30 +1336,6 @@ Gateway
 <td>LeavesQty</td>
 <td>-</td>
 <td></td>
-</tr>
-<tr>
-<td>43211</td>
-<td>Execution Venue</td>
-<td>-</td>
-<td>This value can be ignored, will be CROX on FILLS</td>
-</tr>
-<tr>
-<td>43212</td>
-<td>Execution Contra Broker</td>
-<td>-</td>
-<td>This value can be ignored, will be MIDC on FILLS</td>
-</tr>
-<tr>
-<td>43214</td>
-<td>Liquidity Indicator</td>
-<td>-</td>
-<td>‘P’, provided liquidity ‘T’, took liquidity</td>
-</tr>
-<tr>
-<td>43229</td>
-<td>Fraction Base</td>
-<td>-</td>
-<td>The amount to divide qty by to get real value</td>
 </tr>
 <tr>
 <td>58</td>
@@ -1313,12 +1410,6 @@ Gateway
 <td>Unique identifier of the Canceled order.</td>
 </tr>
 <tr>
-<td>17</td>
-<td>ExecID</td>
-<td>-</td>
-<td>Execution id.</td>
-</tr>
-<tr>
 <td></td>
 <td>Standard Trailer</td>
 <td>-</td>
@@ -1326,15 +1417,30 @@ Gateway
 </tr>
 </tbody></table>
 <h1 id='fix-market-data'>FIX Market Data</h1>
-<p>The information in Zero Hash FIX API specification describes the adaptation of the standard FIX 4.2 for vendors and subscribers to communicate with the Zero Hash quotation and execution platform. FIX 4.2 tags, as described in detail on the Financial Information Exchange Protocol Committee website, www.fixprotocol.org as well as custom tags are used extensively in this document and the reader should familiarize themselves with the latest updates to this release. If an application message in Financial Information Exchange Protocol version 4.2, or previous FIX versions, is not included in this document, the message is ignored.</p>
-
-<p><strong>After you connect to a market data session you will automatically receive msg type X and W for all available trading pairs.</strong></p>
-<h2 id='market-data-responses-top-of-book-snapshot-w'>Market Data Responses – Top of Book Snapshot (W)</h2><div class="highlight"><pre class="highlight plaintext"><code>Example FIX Message
+<p>The information in Zero Hash FIX API specification describes the adaptation of the standard FIX 5.0 for vendors and subscribers to communicate with the Zero Hash quotation and execution platform. FIX 5.0 tags, as described in detail on the Financial Information Exchange Protocol Committee website, www.fixprotocol.org as well as custom tags are used extensively in this document and the reader should familiarize themselves with the latest updates to this release. If an application message in Financial Information Exchange Protocol version 5.0, or previous FIX versions, is not included in this document, the message is ignored.</p>
+<h2 id='market-data-request-v'>Market Data Request (V)</h2><div class="highlight"><pre class="highlight plaintext"><code>Example FIX Message
 
 The FIX message would appear as 
 
-8=FIX.4.2^A9=103^A35=W^A34=54^A49=MIDCDEV1^A52=20210713-13:49:37^A56=YOURSENDCOMP^A55=LTCUSD^A262=0^A268=1^A269=2^A270=133.54^A271=0.91^A10=024^A
-
+8   =   FIXT.1.1
+9   =   133
+35  =   V
+34  =   306
+49  =   ZEROTEST
+52  =   20220915-09:58:59.011
+56  =   ZERO
+146 =   1
+55  =   BTC/USD
+48  =   BTC/USD
+22  =   8
+262 =   ZERO
+263 =   1
+264 =   2
+267 =   3
+269 =   0
+269 =   1
+269 =   2
+10  =   093
 </code></pre></div>
 <table><thead>
 <tr>
@@ -1363,10 +1469,153 @@ The FIX message would appear as
 <td>Identifier for the symbol</td>
 </tr>
 <tr>
-<td>268</td>
-<td>NoMDEntries</td>
+<td>48</td>
+<td>SecurityID</td>
 <td></td>
-<td>Number of market data entries in this snapshot.</td>
+<td>Security ID (usually same as symbol)</td>
+</tr>
+<tr>
+<td>269</td>
+<td>MDEntryType</td>
+<td></td>
+<td>Type of market data entry. Valid values: 0 = Bid, 1 = Offer, 2 = Trade</td>
+</tr>
+<tr>
+<td>263</td>
+<td>SubscriptionRequestType</td>
+<td></td>
+<td>0 = SNAPSHOT <br/> 1 = SNAPSHOT_PLUS_UPDATES <br/> 2 = DISABLE_PREVIOUS_SNAPSHOT_PLUS_UPDATE_REQUEST</td>
+</tr>
+<tr>
+<td></td>
+<td>Standard Trailer</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id='market-data-responses-top-of-book-snapshot-w'>Market Data Responses – Top of Book Snapshot (W)</h2><div class="highlight"><pre class="highlight plaintext"><code>Example FIX Message
+
+The FIX message would appear as 
+
+8    =  FIXT.1.1
+9    =  1187
+35   =  W
+34   =  8819
+49   =  ZERO
+52   =  20220915-09:58:59.131087940
+56   =  ZEROTEST
+22   =  8
+48   =  BTC/USD
+55   =  BTC/USD
+167  =  NONE
+262  =  ZERO
+268  =  11
+269  =  0
+270  =  20000.00
+271  =  0.01000000
+272  =  20220915
+273  =  09:58:58.701896604
+59   =  1
+37   =  1570062592651415552
+278  =  1570062592651415552
+40   =  2
+269  =  0
+270  =  19931.67
+271  =  0.00775000
+272  =  20220915
+273  =  09:58:58.701896604
+59   =  1
+37   =  1570351436330594304
+278  =  1570351436330594304
+40   =  2
+269  =  0
+270  =  19873.28
+271  =  0.01550000
+272  =  20220915
+273  =  09:58:58.701896604
+59   =  1
+37   =  1570351460967936000
+278  =  1570351460967936000
+40   =  2
+269  =  1
+270  =  20335.34
+271  =  0.00625000
+272  =  20220915
+273  =  09:58:58.701896604
+59   =  1
+37   =  1570351423974174720
+278  =  1570351423974174720
+40   =  2
+269  =  1
+270  =  20393.72
+271  =  0.01250000
+272  =  20220915
+273  =  09:58:58.701896604
+59   =  1
+37   =  1570351448670236672
+278  =  1570351448670236672
+40   =  2
+269  =  2
+270  =  44000.00
+271  =  0.02500000
+272  =  20220914
+273  =  18:12:59.695310898
+336  =  OPEN
+269  =  4
+270  =  20523.20
+272  =  20220914
+273  =  12:44:19.851431213
+336  =  OPEN 0    
+1070 =  1
+269  =  6
+270  =  20318.00
+272  =  20220914
+273  =  12:44:03.897119444
+336  =  OPEN
+269  =  7
+270  =  44000.00
+272  =  20220914
+273  =  18:12:59.695310898
+336  =  OPEN
+269  =  8
+270  =  20333.32
+272  =  20220914
+273  =  14:31:11.180821686
+336  =  OPEN
+269  =  B
+270  =  53138.0442000000
+271  =  2.43500000
+272  =  20220914
+273  =  18:12:59.695310898
+336  =  OPEN 1     
+1151 =  BTC
+10   =  238
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Field Name</th>
+<th>Required</th>
+<th>Note</th>
+</tr>
+</thead><tbody>
+<tr>
+<td></td>
+<td>Standard Header</td>
+<td></td>
+<td>MsgType = W</td>
+</tr>
+<tr>
+<td>262</td>
+<td>MDReqID</td>
+<td></td>
+<td>The MDReqID of the MarketDataRequest message.</td>
+</tr>
+<tr>
+<td>55</td>
+<td>Symbol</td>
+<td></td>
+<td>Identifier for the symbol</td>
 </tr>
 <tr>
 <td>269</td>
@@ -1397,10 +1646,31 @@ The FIX message would appear as
 
 The FIX message would appear as 
 
-8=FIX.4.8=FIX.4.2^A9=146^A35=X^A34=77^A49=MIDCDEV1^A52=20210713-14:06:54^A56=YOURSENDCOMP^A262=0^A268=1^A279=0^A269=0^A278=247697979505377327^A55=LTCUSD^A270=120^A271=0.1^A58=62WM7F95YBJTC3^A10=075^A
-
-8=FIX.4.2^A9=146^A35=X^A34=77^A49=MIDCDEV1^A52=20210713-8=FIX.4.2^A9=146^A35=X^A34=78^A49=MIDCDEV1^A52=20210713-14:07:21^A56=YOURSENDCOMP^A262=0^A268=1^A279=0^A269=0^A278=247697979505377328^A55=LTCUSD^A270=121^A271=0.2^A58=62WM7F95YBJUC3^A10=075^A
-
+8    =    FIXT.1.1
+9    =    256
+35   =    X
+34   =    12781
+49   =    ZERO
+52   =    20220915-12:55:24.957686955
+56   =    ZEROTEST
+262  =    ZERO
+268  =    1
+279  =    0
+269  =    0
+278  =    1570395862859935744
+55   =    BTC/USD
+48   =    BTC/USD
+22   =    8
+167  =    NONE
+1151 =    BTC
+270  =    19609.77
+271  =    0.05425000
+272  =    20220915
+273  =    12:55:24.937078681
+59   =    1
+37   =    1570395862859935744
+40   =    2
+10   =    049
 </code></pre></div>
 <p><br/></p>
 
@@ -1423,12 +1693,6 @@ The FIX message would appear as
 <td>MDReqID</td>
 <td></td>
 <td>The MDReqID of the MarketDataRequest message.</td>
-</tr>
-<tr>
-<td>268</td>
-<td>NoMDEntries</td>
-<td></td>
-<td>Number of market data entries in this snapshot.</td>
 </tr>
 <tr>
 <td>279</td>
@@ -1455,10 +1719,10 @@ The FIX message would appear as
 <td>Identifier for the symbol</td>
 </tr>
 <tr>
-<td>65</td>
-<td>SymbolSfx</td>
+<td>48</td>
+<td>SecurityID</td>
 <td></td>
-<td></td>
+<td>Security ID</td>
 </tr>
 <tr>
 <td>270</td>
@@ -1485,7 +1749,21 @@ The FIX message would appear as
 <td></td>
 </tr>
 </tbody></table>
-<h2 id='market-data-request-reject-y'>Market Data Request Reject (Y)</h2>
+<h2 id='security-list-request-x'>Security List Request (x)</h2><div class="highlight"><pre class="highlight plaintext"><code>Example FIX Message
+
+The FIX message would appear as 
+
+8   =   FIXT.1.1
+9   =   68
+35  =   x
+34  =   2
+49  =   FUTU-2
+52  =   20220914-10:02:28.627
+56  =   ZERO
+320 =   FUTU
+559 =   4
+10  =   128
+</code></pre></div>
 <p><br/></p>
 
 <table><thead>
@@ -1500,25 +1778,588 @@ The FIX message would appear as
 <td></td>
 <td>Standard Header</td>
 <td></td>
-<td>MsgType = Y</td>
+<td>MsgType = x</td>
 </tr>
 <tr>
-<td>262</td>
-<td>MDReqID</td>
 <td></td>
-<td>The MDReqID of the MarketDataRequest message.</td>
+<td>Instrument</td>
+<td></td>
+<td>Instrument to be retrieved using fields 55 &amp; 48 if empty will retrieve list of everything</td>
 </tr>
 <tr>
-<td>268</td>
+<td>559</td>
+<td>SecurityListRequestType</td>
+<td></td>
+<td>0 = SYMBOL <br/> 1 = SECURITYTYPE_AND_OR_CFICODE <br/> 2 = PRODUCT <br/> 3 = TRADINGSESSIONID <br/> 4 = ALL_SECURITIES <br/> 5 = MARKETID_OR_MARKETID_PLUS_MARKETSEGMENTID</td>
+</tr>
+<tr>
+<td>320</td>
+<td>SecurityReqID</td>
+<td></td>
+<td>Request ID</td>
+</tr>
+<tr>
+<td>58</td>
 <td>Text</td>
 <td></td>
-<td>Reason for the rejection.</td>
+<td>Text</td>
 </tr>
 <tr>
 <td></td>
 <td>Standard Trailer</td>
 <td></td>
 <td></td>
+</tr>
+</tbody></table>
+<h2 id='business-message-reject-j'>Business message reject (j)</h2>
+<p><br/></p>
+
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Field Name</th>
+<th>Required</th>
+<th>Note</th>
+</tr>
+</thead><tbody>
+<tr>
+<td></td>
+<td>Standard Header</td>
+<td></td>
+<td>MsgType = j</td>
+</tr>
+<tr>
+<td>380</td>
+<td>BusinessRejectReason</td>
+<td></td>
+<td>0 = OTHER <br/> 1 = UNKNOWN_ID <br/> 18 = INVALID_PRICE_INCREMENT <br/> 2 = UNKNOWN_SECURITY <br/> 3 = UNSUPPORTED_MESSAGE_TYPE <br/> 4 = APPLICATION_NOT_AVAILABLE <br/> 5 = CONDITIONALLY_REQUIRED_FIELD_MISSING <br/> 6 = NOT_AUTHORIZED <br/> 7 = DELIVERTO_FIRM_NOT_AVAILABLE_AT_THIS_TIME</td>
+</tr>
+<tr>
+<td>379</td>
+<td>BusinessRejectRefID</td>
+<td></td>
+<td>Rejection ID</td>
+</tr>
+<tr>
+<td>372</td>
+<td>RefMsgType</td>
+<td></td>
+<td>Reference Message type</td>
+</tr>
+<tr>
+<td>45</td>
+<td>RefSeqNum</td>
+<td></td>
+<td>Reference Sequence Number</td>
+</tr>
+<tr>
+<td></td>
+<td>Standard Trailer</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id='appendix'>Appendix</h1>
+<p>Below is the appendix for needed components included in Order Executions &amp; Market Data requests:</p>
+<h2 id='instrument'>Instrument</h2>
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Field Name</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Accepted Enums</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>231</td>
+<td>ContactMultiplier</td>
+<td></td>
+<td>FLOAT</td>
+<td></td>
+</tr>
+<tr>
+<td>541</td>
+<td>MaturityDate</td>
+<td></td>
+<td>LOCALMKTDATE</td>
+<td></td>
+</tr>
+<tr>
+<td>969</td>
+<td>MinPriceIncrement</td>
+<td></td>
+<td>FLOAT</td>
+<td></td>
+</tr>
+<tr>
+<td>460</td>
+<td>Product</td>
+<td></td>
+<td>INT</td>
+<td>1 = AGENCY <br/> 10 = MORTGAGE <br/> 11 = MUNICIPAL <br/> 12 = OTHER <br/> 13 = FINANCING <br/> 2 = COMMODITY <br/> 3 = CORPORATE <br/> 4 = CURRENCY <br/> 5 = EQUITY <br/> 6 = GOVERNMENT <br/> 7 = INDEX <br/> 8 = LOAN <br/> 9 = MONEYMARKET</td>
+</tr>
+<tr>
+<td>48</td>
+<td>SecurityID</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>22</td>
+<td>SecurityIDSource</td>
+<td></td>
+<td>STRING</td>
+<td>8=Exchange Symbol (Currently this is only used for Crypto)</td>
+</tr>
+<tr>
+<td>762</td>
+<td>SecuritySubType</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>167</td>
+<td>SecurityType</td>
+<td></td>
+<td>STRING</td>
+<td>CS = COMMON_STOCK (Currently this is only used for Crypto)</td>
+</tr>
+<tr>
+<td>55</td>
+<td>Symbol</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id='orderqtydata'>OrderQtyData</h2>
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Field Name</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Accepted Enums</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>152</td>
+<td>CashOrderQty</td>
+<td></td>
+<td>QTY</td>
+<td></td>
+</tr>
+<tr>
+<td>38</td>
+<td>OrderQty</td>
+<td></td>
+<td>QTY</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id='parties'>Parties</h2>
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Field Name</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Accepted Enums</th>
+</tr>
+</thead><tbody>
+<tr>
+<td></td>
+<td>NoPartyIDs</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;448</td>
+<td>PartyID</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;447</td>
+<td>PartyIDSource</td>
+<td></td>
+<td>CHAR</td>
+<td><br/> 1 = KOREAN_INVESTOR_ID <br/> 2 = TAIWANESE_QUALIFIED_FOREIGN_INVESTOR_ID_QFII_FID <br/> 3 = TAIWANESE_TRADING_ACCT <br/> 4 = MALAYSIAN_CENTRAL_DEPOSITORY <br/> 5 = CHINESE_INVESTOR_ID <br/> 6 = UK_NATIONAL_INSURANCE_OR_PENSION_NUMBER <br/> 7 = US_SOCIAL_SECURITY_NUMBER <br/> 8 = US_EMPLOYER_OR_TAX_ID_NUMBER <br/> 9 = AUSTRALIAN_BUSINESS_NUMBER <br/> A = AUSTRALIAN_TAX_FILE_NUMBER <br/> B = BIC <br/> C = GENERALLY_ACCEPTED_MARKET_PARTICIPANT_IDENTIFIER <br/> D = PROPRIETARY <br/> E = ISO_COUNTRY_CODE <br/> F = SETTLEMENT_ENTITY_LOCATION <br/> G = MIC <br/> H = CSD_PARTICIPANT_MEMBER_CODE <br/> I = DIRECTED_BROKER_THREE_CHARACTER_ACRONYM_AS_DEFINED_IN_ISITC_ETC_BEST_PRACTICE_GUIDELINES_DOCUMENT <br/> N = LEGAL_ENTITY_IDENTIFIER</td>
+</tr>
+<tr>
+<td>&gt;452</td>
+<td>PartyRole</td>
+<td></td>
+<td>INT</td>
+<td>24 = Customer Account</td>
+</tr>
+</tbody></table>
+<h2 id='commissiondata'>CommissionData</h2>
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Field Name</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Accepted Enums</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>13</td>
+<td>CommType</td>
+<td></td>
+<td>CHAR</td>
+<td>1 = PER_UNIT <br/> 2 = PERCENT <br/> 3 = ABSOLUTE <br/> 4 = PERCENTAGE_WAIVED_CASH_DISCOUNT <br/> 5 = PERCENTAGE_WAIVED_ENHANCED_UNITS <br/> 6 = POINTS_PER_BOND_OR_CONTRACT</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Commission</td>
+<td></td>
+<td>FLOAT</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id='instrmtlegexecgrp'>InstrmtLegExecGrp</h2>
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Field Name</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Accepted Enums</th>
+</tr>
+</thead><tbody>
+<tr>
+<td></td>
+<td>NoLegs</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>InstrumentLeg</td>
+<td></td>
+<td>Component</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;637</td>
+<td>LegLastPx</td>
+<td></td>
+<td>PRICE</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;1418</td>
+<td>LegLastQty</td>
+<td></td>
+<td>QTY</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id='instrumentleg'>InstrumentLeg</h2>
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Field Name</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Accepted Enums</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>566</td>
+<td>LegPrice</td>
+<td></td>
+<td>PRICE</td>
+<td></td>
+</tr>
+<tr>
+<td>623</td>
+<td>LegRatioQty</td>
+<td></td>
+<td>FLOAT</td>
+<td></td>
+</tr>
+<tr>
+<td>602</td>
+<td>LegSecurityID</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>603</td>
+<td>LegSecurityIDSource</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>764</td>
+<td>LegSecuritySubType</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>609</td>
+<td>LegSecurityType</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>624</td>
+<td>LegSide</td>
+<td></td>
+<td>CHAR</td>
+<td></td>
+</tr>
+<tr>
+<td>600</td>
+<td>LegSymbol</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id='eventgrp'>EventGrp</h2>
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Field Name</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Accepted Enums</th>
+</tr>
+</thead><tbody>
+<tr>
+<td></td>
+<td>NoEvents</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;866</td>
+<td>EventDate</td>
+<td></td>
+<td>LOCALMKTDATE</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;848</td>
+<td>EventText</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;1145</td>
+<td>EventTime</td>
+<td></td>
+<td>UTCTIMESTAMP</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;865</td>
+<td>EventType</td>
+<td></td>
+<td>INT</td>
+<td>5 = ACTIVATION <br/> 6 = INACTIVATION <br/> 7 = LAST_ELIGIBLE_TRADE_DATE</td>
+</tr>
+</tbody></table>
+<h2 id='mdfullgrp'>MDFullGrp</h2>
+<table><thead>
+<tr>
+<th>Tag</th>
+<th>Field Name</th>
+<th>Required</th>
+<th>Data Type</th>
+<th>Accepted Enums</th>
+</tr>
+</thead><tbody>
+<tr>
+<td></td>
+<td>NoMDEntries</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;15</td>
+<td>Currency</td>
+<td></td>
+<td>CURRENCY</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;18</td>
+<td>ExecInst</td>
+<td></td>
+<td>MULTIPLECHARVALUE</td>
+<td>0 = STAY_ON_OFFER_SIDE <br/> 1 = NOT_HELD <br/> 2 = WORK <br/> 3 = GO_ALONG <br/> 4 = OVER_THE_DAY <br/> 5 = HELD <br/> 6 = PARTICIPANT_DONT_INITIATE <br/> 7 = STRICT_SCALE <br/> 8 = TRY_TO_SCALE <br/> 9 = STAY_ON_BID_SIDE <br/> A = NO_CROSS <br/> B = OK_TO_CROSS <br/> C = CALL_FIRST <br/> D = PERCENT_OF_VOLUME <br/> E = DO_NOT_INCREASE <br/> F = DO_NOT_REDUCE <br/> G = ALL_OR_NONE <br/> H = REINSTATE_ON_SYSTEM_FAILURE <br/> I = INSTITUTIONS_ONLY <br/> J = REINSTATE_ON_TRADING_HALT <br/> K = CANCEL_ON_TRADING_HALT <br/> L = LAST_PEG <br/> M = MID_PRICE_PEG <br/> N = NON_NEGOTIABLE <br/> O = OPENING_PEG <br/> P = MARKET_PEG <br/> Q = CANCEL_ON_SYSTEM_FAILURE <br/> R = PRIMARY_PEG <br/> S = SUSPEND <br/> T = FIXED_PEG_TO_LOCAL_BEST_BID_OR_OFFER_AT_TIME_OF_ORDER <br/> U = CUSTOMER_DISPLAY_INSTRUCTION <br/> V = NETTING <br/> W = PEG_TO_VWAP <br/> X = TRADE_ALONG <br/> Y = TRY_TO_STOP <br/> Z = CANCEL_IF_NOT_BEST <br/> a = TRAILING_STOP_PEG <br/> b = STRICT_LIMIT <br/> c = IGNORE_PRICE_VALIDITY_CHECKS <br/> d = PEG_TO_LIMIT_PRICE <br/> e = WORK_TO_TARGET_STRATEGY <br/> f = INTERMARKET_SWEEP <br/> g = EXTERNAL_ROUTING_ALLOWED <br/> h = EXTERNAL_ROUTING_NOT_ALLOWED <br/> i = IMBALANCE_ONLY <br/> j = SINGLE_EXECUTION_REQUESTED_FOR_BLOCK_TRADE <br/> k = BEST_EXECUTION <br/> l = SUSPEND_ON_SYSTEM_FAILURE <br/> m = SUSPEND_ON_TRADING_HALT <br/> n = REINSTATE_ON_CONNECTION_LOSS <br/> o = CANCEL_ON_CONNECTION_LOSS <br/> p = SUSPEND_ON_CONNECTION_LOSS <br/> q = RELEASE_FROM_SUSPENSION <br/> r = EXECUTE_AS_DELTA_NEUTRAL_USING_VOLATILITY_PROVIDED <br/> s = EXECUTE_AS_DURATION_NEUTRAL <br/> t = EXECUTE_AS_FX_NEUTRAL</td>
+</tr>
+<tr>
+<td>&gt;126</td>
+<td>ExpireTime</td>
+<td></td>
+<td>UTCTIMESTAMP</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;332</td>
+<td>HighPx</td>
+<td></td>
+<td>PRICE</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;31</td>
+<td>LastPx</td>
+<td></td>
+<td>PRICE</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;283</td>
+<td>LocationID</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;333</td>
+<td>LowPx</td>
+<td></td>
+<td>PRICE</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;272</td>
+<td>MDEntryDate</td>
+<td></td>
+<td>UTCDATEONLY</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;278</td>
+<td>MDEntryID</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;270</td>
+<td>MDEntryPx</td>
+<td></td>
+<td>PRICE</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;271</td>
+<td>MDEntrySize</td>
+<td></td>
+<td>QTY</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;273</td>
+<td>MDEntryTime</td>
+<td></td>
+<td>UTCTIMEONLY</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;269</td>
+<td>MDEntryType</td>
+<td></td>
+<td>CHAR</td>
+<td>0 = BID <br/> 1 = OFFER <br/> 2 = TRADE <br/> 3 = INDEX_VALUE <br/> 4 = OPENING_PRICE <br/> 5 = CLOSING_PRICE <br/> 6 = SETTLEMENT_PRICE <br/> 7 = TRADING_SESSION_HIGH_PRICE <br/> 8 = TRADING_SESSION_LOW_PRICE <br/> 9 = TRADING_SESSION_VWAP_PRICE <br/> A = IMBALANCE <br/> B = TRADE_VOLUME <br/> C = OPEN_INTEREST <br/> D = COMPOSITE_UNDERLYING_PRICE <br/> E = SIMULATED_SELL_PRICE <br/> F = SIMULATED_BUY_PRICE <br/> G = MARGIN_RATE <br/> H = MID_PRICE <br/> J = EMPTY_BOOK <br/> K = SETTLE_HIGH_PRICE <br/> L = SETTLE_LOW_PRICE <br/> M = PRIOR_SETTLE_PRICE <br/> N = SESSION_HIGH_BID <br/> O = SESSION_LOW_OFFER <br/> P = EARLY_PRICES <br/> Q = AUCTION_CLEARING_PRICE <br/> R = DAILY_VALUE_ADJUSTMENT_FOR_LONG_POSITIONS <br/> S = SWAP_VALUE_FACTOR <br/> T = CUMULATIVE_VALUE_ADJUSTMENT_FOR_LONG_POSITIONS <br/> U = DAILY_VALUE_ADJUSTMENT_FOR_SHORT_POSITIONS <br/> V = CUMULATIVE_VALUE_ADJUSTMENT_FOR_SHORT_POSITIONS <br/> W = FIXING_PRICE <br/> X = CASH_RATE <br/> Y = RECOVERY_RATE <br/> Z = RECOVERY_RATE_FOR_LONG <br/> a = RECOVERY_RATE_FOR_SHORT</td>
+</tr>
+<tr>
+<td>&gt;1070</td>
+<td>MDQuoteType</td>
+<td></td>
+<td>INT</td>
+<td>0 = INDICATIVE<br/> 1 = TRADEABLE<br/> 2 = RESTRICTED_TRADEABLE<br/> 3 = COUNTER<br/> 4 = INDICATIVE_AND_TRADEABLE</td>
+</tr>
+<tr>
+<td>&gt;110</td>
+<td>MinQty</td>
+<td></td>
+<td>QTY</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;286</td>
+<td>OpenCloseSettlFlag</td>
+<td></td>
+<td>MULTIPLECHARVALUE</td>
+<td>0 = DAILY_OPEN <br/> 1 = SESSION_OPEN <br/> 2 = DELIVERY_SETTLEMENT_ENTRY <br/> 3 = EXPECTED_ENTRY <br/> 4 = ENTRY_FROM_PREVIOUS_BUSINESS_DAY <br/> 5 = THEORETICAL_PRICE_VALUE</td>
+</tr>
+<tr>
+<td>&gt;40</td>
+<td>OrdType</td>
+<td></td>
+<td>CHAR</td>
+<td>2 = LIMIT <br/> 3 = STOP <br/> 4 = STOP_LIMIT <br/> K = MARKET_WITH_LEFT_OVER_AS_LIMIT</td>
+</tr>
+<tr>
+<td>&gt;37</td>
+<td>OrderID</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>Parties</td>
+<td></td>
+<td>Component</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;762</td>
+<td>SecuritySubType</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;58</td>
+<td>Text</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;59</td>
+<td>TimeInForce</td>
+<td></td>
+<td>CHAR</td>
+<td>0 = DAY <br/> 1 = GOOD_TILL_CANCEL <br/> 3 = IMMEDIATE_OR_CANCEL <br/> 6 = GOOD_TILL_DATE</td>
+</tr>
+<tr>
+<td>&gt;336</td>
+<td>TradingSessionID</td>
+<td></td>
+<td>STRING</td>
+<td></td>
+</tr>
+<tr>
+<td>&gt;828</td>
+<td>TrdType</td>
+<td></td>
+<td>INT</td>
+<td>0 = REGULAR_TRADE (Default)</td>
 </tr>
 </tbody></table>
 <h1 id='7c87180da7-2'><br/></h1>
