@@ -39,14 +39,6 @@ Recent changes and additions to Zero Hash Matching Engine API.
 
 Initial Version
 
-# Supported Orders
-
-The table below details what Order Types and associated Time In Force are supported over the FIX API.
-
-| Order Type  | Time In Force    |
-| ----------- | ---------------- |
-| Limit       | DAY <br/> GTC <br/> IOC <br/> GTD |
-
 # Connectivity
 To connect to the Zero Hash Matching Engine via FIX API, clients must have thier source IP address whitelisted and establish a secure SSL connection to the FIX gateway. If your FIX implementation does not support establishing a SSL connection natively, you will need to setup a local proxy such as stunnel to establish a secure connection to the FIX gateway. To request these details and whitelist your source IP addresses, clients can contact support@zerohash.com.
 
