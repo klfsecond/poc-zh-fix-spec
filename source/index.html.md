@@ -565,6 +565,7 @@ The FIX message would appear as
 | 48  | SecurityID              |          | Security ID (usually same as symbol)                                                                 |
 | 269 | MDEntryType             |          | Type of market data entry. Valid values: 0 = Bid, 1 = Offer, 2 = Trade                               |
 | 263 | SubscriptionRequestType |          | 0 = SNAPSHOT <br/> 1 = SNAPSHOT_PLUS_UPDATES <br/> 2 = DISABLE_PREVIOUS_SNAPSHOT_PLUS_UPDATE_REQUEST |
+| 264 | MarketDepth             |          | 0 = FULL_BOOK <br/> 1 = TOP_OF_BOOK                                                                  |
 |     | Standard Trailer        |          |                                                                                                      |
 
 
